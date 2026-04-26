@@ -3,6 +3,7 @@ import Modal from "../components/Modal";
 
 const Home = () => {
     const [isCardModalOpen, setIsCardModalOpen] = useState<boolean>(false);
+    const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
 
     const [index, setIndex] = useState<number>(0);
     const handlePrev = () => {
@@ -25,10 +26,32 @@ const Home = () => {
             <div className="relative w-full flex-1 bg-emerald-800 overflow-hidden ">
                 <div style={{ transform: `translateX(${move}px)` }} className="absolute left-1/2 -translate-x-[75px] border flex flex-row items-center h-full">
                     {//List
-                        Array.from({ length: 3 }).map((_) => (
+                        Array.from({ length: 3 }).map((_, index) => (
                             <div className="w-[150px] h-[250px] px-2 border ">
                                 <div className="flex flex-col w-full h-full  bg-blue-500 rounded-lg">
-                                    <span>list 1</span>
+                                    <div className="relative flex flex-row items-center">
+                                        <span className="flex-1">list 1</span>
+                                        <div className="relative">
+                                            <button onClick={() => setOpenDropdownId((prev) => prev === index ? null : index)} className="w-5 border hover:bg-zinc-500/50">...</button>
+                                            {/*Dropdown*/
+                                                openDropdownId === index &&
+                                                < div className="absolute flex flex-col w-50 pb-5 bg-zinc-800 rounded-lg">
+                                                    <div className="grid grid-cols-[1fr_auto_1fr] px-2 py-3">
+                                                        <div></div>
+                                                        <span className="text-gray-300">列表動作</span>
+                                                        <span onClick={() => setOpenDropdownId(null)} className="text-end text-gray-300 cursor-pointer">X</span>
+                                                    </div>
+                                                    <div className="flex flex-col">
+                                                        {
+                                                            Array.from({ length: 5 }).map((_) => (
+                                                                <span className="px-2 py-1 text-gray-300 hover:bg-zinc-700 cursor-pointer">新增卡片</span>
+                                                            ))
+                                                        }
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
                                     <div className="flex flex-col gap-2 w-full flex-1 border overflow-y-scroll ">
                                         {//Cards
                                             Array.from({ length: 5 }).map((_) => (
@@ -93,7 +116,7 @@ const Home = () => {
                     </div>
                 </>
             </Modal>
-        </div>
+        </div >
     )
 }
 
