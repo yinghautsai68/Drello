@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { db } from './config/db';
+import authRouter from './modules/auth/auth.routes';
 
 const app = express();
 app.use(express.json());
@@ -15,6 +16,9 @@ const testDB = async () => {
     }
 }
 testDB();
+
+app.use('/api/auth', authRouter);
+
 app.listen(5000, () => {
     console.log('server running');
 });
