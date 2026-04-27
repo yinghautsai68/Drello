@@ -12,7 +12,7 @@ export const login = async (form: LoginFormType) => {
         const result = await response.json();
         if (!result.success) {
             console.error(result.message);
-            throw new Error;
+            throw new Error(result.message);
         }
 
         return result.data;

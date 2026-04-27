@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { login } from "../services/auth.service";
+import toast from "react-hot-toast";
 export type LoginFormType = {
     username: string,
     password: string
@@ -23,8 +24,10 @@ const Login = () => {
             const data = await login(loginForm);
             console.log(data);
             localStorage.setItem('token', data);
-        } catch (error) {
+            toast.success('登入成功');
+        } catch (error: any) {
             console.error(error);
+            toast.error(error.message);
         }
     };
 
