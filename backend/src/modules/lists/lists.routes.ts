@@ -4,8 +4,8 @@ import { authenticate } from '../../middlewares/authenticate';
 
 const listsRouter = express.Router();
 
-listsRouter.post('/', handleCreateList);
-listsRouter.get('/', handleGetLists);
+listsRouter.post('/', authenticate, handleCreateList);
+listsRouter.get('/', authenticate, handleGetLists);
 listsRouter.patch('/:id', authenticate, handleUpdateList);
-listsRouter.delete('/:id', handleDeleteList);
+listsRouter.delete('/:id', authenticate, handleDeleteList);
 export default listsRouter;
