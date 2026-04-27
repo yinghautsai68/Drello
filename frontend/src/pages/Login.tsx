@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { login } from "../services/auth.service";
 import toast from "react-hot-toast";
 import { loginSchema } from "../schemas/auth.schema";
+import { useNavigate } from "react-router";
 export type LoginFormType = {
     username: string,
     password: string
 }
 const Login = () => {
+    const navigate = useNavigate();
 
     const [loginForm, setLoginForm] = useState<LoginFormType>({
         username: '',
@@ -32,6 +34,7 @@ const Login = () => {
             console.log(data);
             localStorage.setItem('token', data);
             toast.success('登入成功');
+            navigate('/home');
         } catch (error: any) {
             console.error(error);
             toast.error(error.message);
