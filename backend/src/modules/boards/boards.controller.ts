@@ -3,6 +3,7 @@ import { createBoardSchema, updateBoardSchema } from "./boards.schema";
 import { createBoard, deleteBoard, getBoards, updateBoard } from "./boards.service";
 
 export const handleCreateBoard = async (req: Request, res: Response) => {
+    const { user_id } = (req as any).user;
     const result = createBoardSchema.safeParse(req.body);
     if (!result.success) {
         return res.status(400).json({ success: false, message: `所輸入資料有誤` });
@@ -10,7 +11,7 @@ export const handleCreateBoard = async (req: Request, res: Response) => {
     const { name, color, image_url } = result.data;
 
     try {
-        await createBoard({ name, color, image_url });
+        await createBoard(user_id, { name, color, image_url });
         res.status(201).json({ success: true, message: `建立Board成功` });
 
     } catch (error: any) {

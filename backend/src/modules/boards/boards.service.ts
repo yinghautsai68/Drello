@@ -1,7 +1,7 @@
 import { db } from "../../config/db";
 import type { CreateBoardType, UpdateBoardType } from "./boards.schema";
 
-export const createBoard = async ({ name, color, image_url }: CreateBoardType) => {
+export const createBoard = async (user_id: number, { name, color, image_url }: CreateBoardType) => {
     const [insertResult]: any = await db.query(
         `INSERT INTO boards (user_id, name, color, image_url) VALUES (1,?,?,?)`,
         [name, color, image_url]
