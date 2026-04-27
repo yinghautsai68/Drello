@@ -10,6 +10,7 @@ CREATE TABLE users(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+INSERT INTO users (username, password) VALUES('root', '$2b$10$EXwMSYQmQNtCdF8Dh.BA.eio2fgCByAaxFHDxqWIqaMkHArh3iT7y');
 
 CREATE TABLE boards(
 	id INT AUTO_INCREMENT PRIMARY KEY,
@@ -24,13 +25,15 @@ CREATE TABLE boards(
     
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+INSERT INTO boards (user_id, name, color) VALUES(1, 'board 1', 'black');
+
 
 CREATE TABLE lists(
 	id INT AUTO_INCREMENT PRIMARY KEY,
     board_id INT NOT NULL,
     
     name VARCHAR(255),
-    positon INT NOT NULL,
+    position INT NOT NULL,
     color VARCHAR(255),
     
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -38,6 +41,8 @@ CREATE TABLE lists(
 
 	FOREIGN KEY (board_id) REFERENCES boards(id)
 );
+INSERT INTO lists(board_id, name, position, color) VALUES(1, 'list 1', 0, 'black');
+
 
 CREATE TABLE cards(
 	id INT AUTO_INCREMENT PRIMARY KEY,
