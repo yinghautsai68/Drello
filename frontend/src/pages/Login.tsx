@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { login } from "../services/auth.service";
 import toast from "react-hot-toast";
+import { loginSchema } from "../schemas/auth.schema";
 export type LoginFormType = {
     username: string,
     password: string
@@ -20,6 +21,12 @@ const Login = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         console.log('submit');
         e.preventDefault();
+
+        const result = loginSchema.safeParse(loginForm);
+        if (!result.success) {
+            toast.error(result.error.issues[0].message);
+            return;
+        }
         try {
             const data = await login(loginForm);
             console.log(data);
@@ -42,7 +49,7 @@ const Login = () => {
                         <input id="username" name="username" value={loginForm.username} onChange={handleChange} type="text" className="border" />
                         <label htmlFor="password">密碼</label>
                         <input id="password" name="password" value={loginForm.password} onChange={handleChange} type="password" className="border" />
-                        <button className="bg-emerald-700 rounded-lg">登入</button>
+                        <button type="submit" className="bg-emerald-700 rounded-lg">登入</button>
                     </form>
                 </div>
             </div>
