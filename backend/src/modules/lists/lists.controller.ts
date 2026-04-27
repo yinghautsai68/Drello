@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
-import { createListSchema } from "./lists.schema";
-import { createList, deleteList, getLists } from "./lists.services";
+import { createListSchema, updateListSchema } from "./lists.schema";
+import { createList, deleteList, getLists, updateList } from "./lists.services";
 import { success } from "zod";
 
 export const handleCreateList = async (req: Request, res: Response) => {
@@ -27,6 +27,26 @@ export const handleGetLists = async (req: Request, res: Response) => {
         res.status(200).json({ success: true, messaeg: `取得lists成功`, data: data });
     } catch (error: any) {
         console.error(error);
+        res.status(500).json({ success: false, message: `SERVER ERROR` });
+    }
+}
+
+
+export const handleUpdateList = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const result = updateListSchema.safeParse(req.body);
+    if (!result.success) {
+        return res.status(400).json({ success: false, message: `所輸入資料有誤` });
+    }
+    const form = result.data;
+    try {
+        await updateList(id as string, form);
+        res.status(200).json({ success: true, message: `更新list${id}成功` });
+    } catch (error: any) {
+        console.error(error);
+        if (error.message === 'LIST_NOT_FOUND') {
+            res.status(404).json({ success: false, message: `該list不存在` });
+        }
         res.status(500).json({ success: false, message: `SERVER ERROR` });
     }
 }
